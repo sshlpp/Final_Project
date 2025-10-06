@@ -1,8 +1,20 @@
 {% extends "base.html" %} 
+{% load static %}
 {% block title %}
 Swaped
 {% endblock %} 
 {% block content %}
 <h1 class="main-title">Welcome to the Main Page</h1>
-<p>This is the main content of the page.</p>
+<div class="product-list">
+{% for product in object_list %}
+    <div class="product">
+        <img class="product-image" src="{{ product.image.url }}" alt="{{ product.name }}">
+        <h2>{{ product.brand }}</h2>
+        <p>Size: {{ product.size }}</p>
+        <p>{{ product.description }}</p>
+        <p>Price: {{ product.price }}</p>
+        <a class="add-to-cart" href="{% url 'cart' product.id %}">Add to Cart</a>
+    </div>
+{% endfor %}
+</div>
 {% endblock %}

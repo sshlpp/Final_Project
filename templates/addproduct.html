@@ -1,1 +1,12 @@
 {% extends "base.html" %}
+{% load static %}
+{% block content %}
+<div style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh;">
+    <h1>Add New Product</h1>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Add Product</button>
+    </form>
+</div>
+{% endblock %}

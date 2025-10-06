@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}
+Cart
+{% endblock %}
+{% block content %}
+<div class="cartContainer">
+    <img class="productCartImage" src="{{ product.image.url }}" alt="Cart">
+    <div class="productCartDetails">
+        <h2>{{ product.name }}</h2>
+        <div>
+            <span>{{ product.size }} - {{ product.condition }} - {{ product.brand }}</span>
+        </div>
+        <p>{{ product.price }} Kč</p>
+        <p>Description: {{ product.description }}</p>
+        <a class="checkout">Proceed to Checkout</a>
+    </div>
+</div>
+{% endblock %}
