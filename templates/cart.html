@@ -5,15 +5,44 @@ Cart
 {% endblock %}
 {% block content %}
 <div class="cartContainer">
-    <img class="productCartImage" src="{{ product.image.url }}" alt="Cart">
-    <div class="productCartDetails">
-        <h2>{{ product.name }}</h2>
-        <div>
-            <span>{{ product.size }} - {{ product.condition }} - {{ product.brand }}</span>
+    <div class="productCartImageDiv">
+        <img class="productCartImage" src="{{ product.image.url }}" alt="Cart">
+    </div>
+    <div class="productCartDetailsDiv">
+        <div class="productCartDetails">
+            <div>
+                <h2>{{ product.name }}</h2>
+                <span>{{ product.size }} - {{ product.condition }} - {{ product.brand }}</span>
+            </div>
+            <div>
+                <p>{{ product.price }} Kč</p>
+            </div>
+            <hr/>
+            <div class="productCartInfo">
+                <div>
+                    <span>Brand</span>
+                    <span>{{ product.brand }}</span>
+                </div>
+                <div>
+                    <span>Size</span>
+                    <span>{{ product.size }}</span>
+                </div>
+                <div>
+                    <span>Condition</span>
+                    <span>{{ product.condition }}</span>
+                </div>
+                <div>
+                    <span>Added at</span>
+                    <span>{{ product.created_at }}</span>
+                </div>
+            </div>
+            <hr/>
+            <div>
+                {{ product.description }}
+            </div>
+            <hr/>
+            <a class="checkout" href="{% url 'checkout' product.id %}">Proceed to Checkout</a>
         </div>
-        <p>{{ product.price }} Kč</p>
-        <p>Description: {{ product.description }}</p>
-        <a class="checkout">Proceed to Checkout</a>
     </div>
 </div>
 {% endblock %}

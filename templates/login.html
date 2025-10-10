@@ -1,6 +1,6 @@
 {% block content %}
 <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh;">
-    <h1>Вход</h1>
+    <h1 class="mainTitle">Вход</h1>
     <form method="post">
         {% csrf_token %}
         {{ form.as_p }}

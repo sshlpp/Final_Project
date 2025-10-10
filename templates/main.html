@@ -3,18 +3,57 @@
 {% block title %}
 Swaped
 {% endblock %} 
+{% block header %}
+    {% if not request.GET.search %}
+      <div class="headerImageDiv">
+        <img class="headerImage" src="{% static 'images/header.jpg' %}" alt="header img" />
+        <div class="headerImageOverlay">
+            <div class="headerImageOverlayTextDiv">
+                <h1 class="mainTitle">Do you want to clear up your wardrobe?</h1>
+                <span>Your marketplace for buying and selling pre-loved fashion.</span>
+            </div>
+            <div class="headerImageOverlayButtonDiv">
+                {% if user.is_authenticated %}
+                <a href="{% url 'add' %}" class="startSellingButton">Start selling</a>
+                {% else %}
+                <a href="{% url 'login' %}" class="startSellingButton">Start selling</a>
+                {% endif %}
+            </div>
+        </div>
+      </div>
+    {% endif %}
+{% endblock %}
+{% block navCategories %}
+    <nav class="navCategories">
+        <ul>
+          <li><a href="?category=men">Men</a></li>
+          <li><a href="?category=women">Women</a></li>
+        </ul>
+    </nav>
+{% endblock %}
 {% block content %}
-<h1 class="main-title">Welcome to the Main Page</h1>
 <div class="product-list">
 {% for product in object_list %}
     <div class="product">
-        <img class="product-image" src="{{ product.image.url }}" alt="{{ product.name }}">
-        <h2>{{ product.brand }}</h2>
-        <p>Size: {{ product.size }}</p>
-        <p>{{ product.description }}</p>
-        <p>Price: {{ product.price }}</p>
-        <a class="add-to-cart" href="{% url 'cart' product.id %}">Add to Cart</a>
+        {% if user.is_authenticated %}
+        <a href="{% url 'cart' product.id %}">
+            <img class="product-image" src="{{ product.image.url }}" alt="{{ product.name }}">
+        </a>
+        {% else %}
+        <a href="{% url 'login'%}">
+            <img class="product-image" src="{{ product.image.url }}" alt="{{ product.name }}">
+        </a>
+        {% endif %}
+        <div class="productDetails">
+            <span>{{ product.brand }}</span>
+            <span>{{ product.size }} - {{ product.condition }}</span>
+            <span class="productDetailsPrice">{{ product.price }} Kč</span>
+        </div>
     </div>
+    {% empty %}
+        <div class="noProductsDiv">
+            <p>No products available.</p>
+        </div>
 {% endfor %}
 </div>
 {% endblock %}

@@ -13,23 +13,36 @@
   </head>
   <body>
     <header>
-      <nav class="navbar">
-        <ul>
-          <li><a href="/">Home</a></li>
-          <li><a href="#">About</a></li>
-          <li><a href="#">Contact</a></li>
+      <nav class="navBar">
+
+        <ul class="navLeft">
+          <li><a href="/"><img class="logo" src="{% static 'images/logo.png' %}" alt="Logo" /></a></li>
+          <li class="navSearchInput">
+            <form method="get" action="{% url 'main' %}">
+              <input type="text" name="search" placeholder="Search..." />
+            </form>
+          </li>
+        </ul>
+
+        <ul class="navRight">
           {% if user.is_authenticated %}
-          <li><a href="#">Profile</a></li>
-          <li><form method="post" action="{% url 'logout' %}">
-    {% csrf_token %}
-    <button type="submit">Logout</button>
-</form></li>
+          <li><a href="{% url 'profile' %}">Profile</a></li>
+          <li>
+            <form method="post" action="{% url 'logout' %}">
+              {% csrf_token %}
+              <button type="submit">Logout</button>
+            </form>
+          </li>
           {% else %}
           <li><a href="{% url 'login' %}">Login</a></li>
           <li><a href="{% url 'registration' %}">Sign Up</a></li>
           {% endif %}
         </ul>
       </nav>
+      {% block navCategories %}
+      {% endblock %}
+      {% block header %}
+      {% endblock %}
     </header>
 
     <main>
@@ -39,7 +52,7 @@
     </main>
 
     <footer>
-      <p>&copy; 2024 Swaped. All rights reserved.</p>
+    
     </footer>
   </body>
 </html>

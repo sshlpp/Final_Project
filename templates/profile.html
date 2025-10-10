@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}
+Profile
+{% endblock %}
+{% block content %}
+<div class="profileDiv">
+    <h1 class="mainTitle">User Profile</h1>
+    <div class="profile-info">
+      <h2>{{ user.username }}</h2>
+      <p>Email: {{ user.email }}</p>
+      <p>Joined: {{ user.date_joined }}</p>
+    </div>
+</div>
+<div class="profileTabsDiv">
+    <button id="salles" onclick="showTab('salles')" class="activeTab">My salles</button>
+    <button id="orders" onclick="showTab('orders')">My orders</button>
+</div>
+<div id="ordersTab" style="display: none;">
+    <h1 class="mainTitle">Orders</h1>
+    <div class="product-list">
+        {% for purchase in purchases %}
+            <div class="product">
+                <img class="product-image" src="{{ purchase.product.image.url }}" alt="{{ purchase.product.name }}">
+                <div class="productDetails">
+                    <span>{{ purchase.product.brand }}</span>
+                    <span>{{ purchase.product.size }} - {{ purchase.product.condition }}</span>
+                    <span class="productDetailsPrice">{{ purchase.product.price }} Kč</span>
+                    {% if purchase.status == 'paid' %}
+                        <span class="badge">Ожидает отправки</span>
+                    {% elif purchase.status == 'shipped' %}
+                        <span class="badge">Ожидает подтверждения покупателем</span>
+                        <a href="{% url 'confirm_delivery' purchase.id %}">Подтвердить получение</a>
+                    {% elif purchase.status == 'delivered' %}
+                        <span class="badge">Завершено</span>
+                    {% endif %}
+                </div>
+            </div>
+        {% empty %}
+            <p>No orders yet.</p>
+        {% endfor %}
+    </div>
+</div>
+<div id="sallesTab">
+    <h1 class="mainTitle">Salles</h1>
+    <div class="product-list">
+        {% for product in products %}
+            <div class="product">
+                <img class="product-image" src="{{ product.image.url }}" alt="{{ product.name }}">
+                <div class="productDetails">
+                    <span>{{ product.brand }}</span>
+                    <span>{{ product.size }} - {{ product.condition }}</span>
+                    <span class="productDetailsPrice">{{ product.price }} Kč</span>
+                    {% for purchase in product.purchase_set.all %}
+                    {% if purchase.status == 'paid' %}
+                        <span class="badge">Ожидает отправки</span>
+                        <a href="{% url 'mark_shipped' purchase.id %}">Отправить</a>
+                    {% elif purchase.status == 'shipped' %}
+                        <span class="badge">Ожидает подтверждения покупателем</span>
+                    {% elif purchase.status == 'delivered' %}
+                        <span class="badge">Завершено</span>
+                    {% endif %}
+                    {% endfor %}
+                </div>
+            </div>
+        {% empty %}
+            <p>No products yet.</p>
+        {% endfor %}
+    </div>
+</div>
+<script src="{% static 'js/profile_product_tabs.js' %}"></script>
+{% endblock %}

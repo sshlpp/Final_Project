@@ -1,12 +1,77 @@
 {% extends "base.html" %}
 {% load static %}
 {% block content %}
-<div style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh;">
+<div class="addProductDiv">
     <h1>Add New Product</h1>
-    <form method="post" enctype="multipart/form-data">
+    <form class="addProductForm" method="post" enctype="multipart/form-data">
         {% csrf_token %}
-        {{ form.as_p }}
+        <div class="formDiv">
+            <label for="id_image">Load Image</label>
+            {{ form.image }}
+        </div>
+        <div class="formDiv">
+            <label for="id_name">Product Name</label>
+            {{ form.name }}
+        </div>
+        <div class="formDiv">
+            <label for="id_brand">Brand</label>
+            {{ form.brand }}
+        </div>
+        <div class="formDiv">
+            <label for="main_category">Main category:</label>
+            <select id="main_category">
+                <option value="">Select main category</option>
+                {% for category in categories %}
+                    <option value="{{ category.id }}">{{ category.name }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="formDiv">
+            <label for="sub_category">Subcategory:</label>
+            <select id="sub_category" name="category">
+                <option value="">Select a subcategory</option>
+            </select>
+        </div>
+        <div class="formDiv">
+            <label for="id_condition">Condition</label>
+            {{ form.condition }}
+        </div>
+        <div class="formDiv">
+            <label for="id_description">Description</label>
+            {{ form.description }}
+        </div>
+        <div class="formDiv">
+            <label for="id_size">Size</label>
+            {{ form.size }}
+        </div>
+
+        <div class="formDiv">
+            <label for="id_price">Price (Kč)</label>
+            {{ form.price }}
+        </div>
         <button type="submit">Add Product</button>
     </form>
 </div>
+<script>
+    const subcategories = [
+        {% for sub in subcategories %}
+            { id: {{ sub.id }}, name: "{{ sub.name }}", parent: {{ sub.parent.id }} },
+        {% endfor %}
+    ];
+
+    document.getElementById('main_category').addEventListener('change', function () {
+        const subSelect = document.getElementById('sub_category');
+        subSelect.innerHTML = '<option value="">Select a subcategory</option>';
+        const selected = parseInt(this.value);
+
+        subcategories.forEach(sub => {
+            if (sub.parent === selected) {
+                const option = document.createElement('option');
+                option.value = sub.id;
+                option.textContent = sub.name;
+                subSelect.appendChild(option);
+            }
+        });
+    });
+</script>
 {% endblock %}
