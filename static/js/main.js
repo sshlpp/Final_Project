@@ -1,1 +1,1 @@
-import "../../myVinted/static/styles/styles.min.css";
+import "../static/styles/styles.min.css";

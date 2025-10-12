@@ -12,14 +12,9 @@ load_dotenv(os.path.join(BASE_DIR, '.env'))
 API_KEY = os.getenv('API_KEY')
 
 class RegistForm(UserCreationForm):
-    seller = forms.BooleanField(
-        required=False,
-        label="Я хочу продавать вещи",
-        widget=forms.CheckboxInput(attrs={"class": "form-check-input"})
-    )
     class Meta:
         model = SwapedUser
-        fields = ["username", "email", "password1", "password2", "seller"]
+        fields = ["username", "email", "password1", "password2"]
         widgets = {
             "username": forms.TextInput(attrs={
                 "class": "formWidget",
