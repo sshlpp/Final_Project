@@ -32,7 +32,10 @@ Swaped
     </nav>
 {% endblock %}
 {% block content %}
-<div class="product-list">
+<div class="product-list"
+{% if request.GET.search %}
+    style="margin-top: 100px;"
+{% endif %} >
 {% for product in object_list %}
     <div class="product">
         {% if user.is_authenticated %}

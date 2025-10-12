@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+
+{% load static %}
+{% block title %}
+Confirm
+{% endblock %}
+{% block content %}
+{{ user.id }} / {{ purchase.seller.id }} / {{ purchase.buyer.id }}
+{% if user.id == purchase.seller.id %}
+    <div class="sellerConfirmationDiv">
+        <h1 class="mainTitle">Confirm Shipment</h1>
+        <div class="product">
+            <img class="product-image" src="{{ product.image.url }}" alt="{{ product.name }}">
+            <div class="productDetails">
+                <span>{{ product.brand }}</span>
+                <span>{{ product.size }} - {{ product.condition }}</span>
+                <span class="productDetailsPrice">{{ product.price }} Kč</span>
+                {% if purchase.status == 'paid' %}
+                    <span class="badge">Waiting for Shipment</span>
+                {% elif purchase.status == 'shipped' %}
+                    <span class="badge">Waiting for Buyer Confirmation</span>
+                {% elif purchase.status == 'delivered' %}
+                    <span class="badge">Completed</span>
+                {% endif %}
+            </div>
+        </div>
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button class="confirmShipmentBtn" type="submit">Confirm Shipment</button>
+        </form>
+    </div>
+{% elif user.id == purchase.buyer.id %}
+    <div class="buyerConfirmationDiv">
+        <h1 class="mainTitle">Confirm Delivery</h1>
+        <div class="product">
+            <img class="product-image" src="{{ product.image.url }}" alt="{{ product.name }}">
+            <div class="productDetails">
+                <span>{{ product.brand }}</span>
+                <span>{{ product.size }} - {{ product.condition }}</span>
+                <span class="productDetailsPrice">{{ product.price }} Kč</span>
+                {% if purchase.status == 'paid' %}
+                    <span class="badge">Waiting for Shipment</span>
+                {% elif purchase.status == 'shipped' %}
+                    <span class="badge">Waiting for Buyer Confirmation</span>
+                {% elif purchase.status == 'delivered' %}
+                    <span class="badge">Completed</span>
+                {% endif %}
+            </div>
+        </div>
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button class="confirmDeliveryBtn" type="submit">Confirm Delivery</button>
+        </form>
+    </div>
+{% endif %}
+{% endblock %}

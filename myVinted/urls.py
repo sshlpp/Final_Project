@@ -3,7 +3,7 @@ from django.conf.urls.static import static
 
 from django.contrib import admin
 from django.urls import path
-from Shop.views import MainView, RegistView, AddProductView, CartView, ProfileView, CheckoutView
+from Shop.views import MainView, RegistView, AddProductView, CartView, ProfileView, CheckoutView, ShippedView, DeliveredView
 from django.contrib.auth.views import LoginView, LogoutView
 
 urlpatterns = [
@@ -16,4 +16,6 @@ urlpatterns = [
     path('add_to_cart/<int:pk>/', CartView.as_view(), name="cart"),
     path('profile/', ProfileView.as_view(), name="profile"),
     path('checkout/<int:pk>/', CheckoutView.as_view(), name="checkout"),
+    path('confirm_shipment/<int:pk>/', ShippedView.as_view(), name="confirm_shipment"),
+    path('confirm_delivery/<int:pk>/', DeliveredView.as_view(), name="confirm_delivery"),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

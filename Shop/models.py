@@ -1,6 +1,7 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models, transaction, IntegrityError
 from django.core.validators import MinValueValidator, MaxValueValidator
+from django.utils import timezone
 
 class SwapedUser(AbstractUser):
     avatar = models.ImageField(upload_to='avatars/', blank=True, null=True)
@@ -29,7 +30,7 @@ class Product(models.Model):
     price  = models.DecimalField(max_digits=10, decimal_places=2, null=False, blank=False)
     description = models.TextField(max_length=100, blank=True, null=True)
     is_active = models.BooleanField(default=True)
-    condition = models.CharField(max_length=20, blank=False, null=False, default="good")
+    condition = models.CharField(max_length=20, blank=False, null=False)
     created_at = models.DateTimeField(auto_now_add=True)
     category = models.ForeignKey(Category, on_delete=models.CASCADE, null=True)
 
@@ -53,8 +54,8 @@ class Purchase(models.Model):
     total_price = models.DecimalField(max_digits=10, decimal_places=2, null=False, blank=False)
     created_at = models.DateTimeField(auto_now_add=True)
     delivery_address = models.CharField(max_length=255, blank=True, null=True)
-    customer_first_name = models.TextField(max_length=20, blank=True, null=True)
-    customer_last_name = models.TextField(max_length=20, blank=True, null=True)
+    customer_first_name = models.CharField(max_length=20, blank=True, null=True)
+    customer_last_name = models.CharField(max_length=20, blank=True, null=True)
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='not_purchased')
 
     def shipped(self):

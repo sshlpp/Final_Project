@@ -6,7 +6,7 @@ Cart
 {% block content %}
 <div class="cartContainer">
     <div class="productCartImageDiv">
-        <img class="productCartImage" src="{{ product.image.url }}" alt="Cart">
+        <img class="productCartImage" src="{{ product.image.url }}" alt="Cart" onclick="openImg(this.src)"/>
     </div>
     <div class="productCartDetailsDiv">
         <div class="productCartDetails">
@@ -45,4 +45,9 @@ Cart
         </div>
     </div>
 </div>
+<div id="openedImageDiv" class="openedImageWindow" >
+    <span class="close" onclick="closeImg()">&times;</span>
+    <img class="openedImageContent" id="openedImage" alt="Product Image"/>
+</div>
+<script src="{% static '/js/openImg.js' %}"></script>
 {% endblock %}

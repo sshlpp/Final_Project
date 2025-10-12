@@ -2,7 +2,7 @@
 {% load static %}
 {% block content %}
 <div class="addProductDiv">
-    <h1>Add New Product</h1>
+    <h1 class="mainTitle">Add New Product</h1>
     <form class="addProductForm" method="post" enctype="multipart/form-data">
         {% csrf_token %}
         <div class="formDiv">
@@ -49,7 +49,7 @@
             <label for="id_price">Price (Kč)</label>
             {{ form.price }}
         </div>
-        <button type="submit">Add Product</button>
+        <button class="addProductButton" type="submit">Add Product</button>
     </form>
 </div>
 <script>

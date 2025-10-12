@@ -1,11 +1,21 @@
+{% extends "base.html" %}
 {% block content %}
-<div style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh;">
-    <h1 class="mainTitle">Вход</h1>
-    <form method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Войти</button>
-    </form>
-    <p>Нет аккаунта? <a href="{% url 'registration' %}">Зарегистрироваться</a></p>
-</div>
+<article class="LoginArticle">
+    <h1 class="mainTitle">Login</h1>
+    <section>
+        <form method="post">
+            {% csrf_token %}
+            <label for="id_username">
+            <span>Username</span>
+            {{ form.username }}
+            </label>
+            <label for="id_password">
+            <span>Password</span>
+            {{ form.password }}
+            </label>
+            <button type="submit">Login</button>
+        </form>
+        <p>Don't have an account? <a href="{% url 'registration' %}">Register</a></p>
+    </section>
+</article>
 {% endblock %}

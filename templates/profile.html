@@ -4,14 +4,15 @@
 Profile
 {% endblock %}
 {% block content %}
-<div class="profileDiv">
+<article class="profileInfoArticle">
     <h1 class="mainTitle">User Profile</h1>
-    <div class="profile-info">
-      <h2>{{ user.username }}</h2>
-      <p>Email: {{ user.email }}</p>
-      <p>Joined: {{ user.date_joined }}</p>
-    </div>
-</div>
+    <section class="profileInfoSection">
+      <h2>Hi, {{ user.username }}</h2>
+      <p><span class="material-symbols-outlined">mail</span>{{ user.email }}</p>
+      <p><span class="material-symbols-outlined">calendar_today</span>{{ user.date_joined }}</p>
+      <p><span class="material-symbols-outlined">account_balance_wallet</span>{{ user.wallet }} Kč</p>
+    </section>
+</article>
 <div class="profileTabsDiv">
     <button id="salles" onclick="showTab('salles')" class="activeTab">My salles</button>
     <button id="orders" onclick="showTab('orders')">My orders</button>
@@ -21,18 +22,24 @@ Profile
     <div class="product-list">
         {% for purchase in purchases %}
             <div class="product">
+                {% if purchase.status == 'shipped' %}
+                <a href="{% url 'confirm_delivery' purchase.id %}">
+                    <img class="product-image" src="{{ purchase.product.image.url }}" alt="{{ purchase.product.name }}">
+                </a>
+                {% else %}
                 <img class="product-image" src="{{ purchase.product.image.url }}" alt="{{ purchase.product.name }}">
+                {% endif %}
                 <div class="productDetails">
                     <span>{{ purchase.product.brand }}</span>
                     <span>{{ purchase.product.size }} - {{ purchase.product.condition }}</span>
                     <span class="productDetailsPrice">{{ purchase.product.price }} Kč</span>
                     {% if purchase.status == 'paid' %}
-                        <span class="badge">Ожидает отправки</span>
+                        <span class="badge" style="color: red;">Waiting for Shipment</span>
                     {% elif purchase.status == 'shipped' %}
-                        <span class="badge">Ожидает подтверждения покупателем</span>
-                        <a href="{% url 'confirm_delivery' purchase.id %}">Подтвердить получение</a>
+                        <span class="badge" style="color: orange;">Waiting for Buyer Confirmation</span>
+                        <a href="{% url 'confirm_delivery' purchase.id %}">Confirm Delivery</a>
                     {% elif purchase.status == 'delivered' %}
-                        <span class="badge">Завершено</span>
+                        <span class="badge" style="color: green;">Completed</span>
                     {% endif %}
                 </div>
             </div>
@@ -51,16 +58,20 @@ Profile
                     <span>{{ product.brand }}</span>
                     <span>{{ product.size }} - {{ product.condition }}</span>
                     <span class="productDetailsPrice">{{ product.price }} Kč</span>
-                    {% for purchase in product.purchase_set.all %}
-                    {% if purchase.status == 'paid' %}
-                        <span class="badge">Ожидает отправки</span>
-                        <a href="{% url 'mark_shipped' purchase.id %}">Отправить</a>
-                    {% elif purchase.status == 'shipped' %}
-                        <span class="badge">Ожидает подтверждения покупателем</span>
-                    {% elif purchase.status == 'delivered' %}
-                        <span class="badge">Завершено</span>
+                    {% if product.purchase_set.all %}
+                        {% for purchase in product.purchase_set.all %}
+                            {% if purchase.status == 'paid' %}
+                                <span class="badge" style="color: red;">Waiting for Shipment</span>
+                                <a href="{% url 'confirm_shipment' purchase.id %}">Confirm Shipment</a>
+                            {% elif purchase.status == 'shipped' %}
+                                <span class="badge" style="color: orange;">Waiting for Buyer Confirmation</span>
+                            {% elif purchase.status == 'delivered' %}
+                                <span class="badge" style="color: green;">Completed</span>
+                            {% endif %}
+                        {% endfor %}
+                    {% else %}
+                        <span class="badge">Not Purchased</span>
                     {% endif %}
-                    {% endfor %}
                 </div>
             </div>
         {% empty %}

@@ -2,11 +2,26 @@
 {% block title %}Checkout{% endblock %}
 
 {% block content %}
-<h1>Checkout</h1>
-<p>Thank you for your order!</p>
-<form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Confirm Purchase</button>
-</form>
+<article class="checkoutArticle">
+    <h1 class="mainTitle">Checkout</h1>
+    <section>
+        <p>Take your time to review your order details.</p>
+        <form method="post">
+            {% csrf_token %}
+            <label for="{{ form.customer_first_name.id_for_label }}">
+            <span>First Name</span>
+            {{ form.customer_first_name }}
+            </label>
+            <label for="{{ form.customer_last_name.id_for_label }}">
+            <span>Last Name</span>
+            {{ form.customer_last_name }}
+            </label>
+            <label for="{{ form.delivery_address.id_for_label }}">
+            <span>Delivery Address</span>
+            {{ form.delivery_address }}
+            </label>
+            <button type="submit">Confirm Purchase</button>
+        </form>
+    </section>
+</article>
 {% endblock %}
